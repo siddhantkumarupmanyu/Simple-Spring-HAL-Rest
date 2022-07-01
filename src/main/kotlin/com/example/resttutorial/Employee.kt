@@ -8,8 +8,8 @@ import javax.persistence.Id
 // and null checks
 // rest backward compatibility makes shit hard...
 // maybe it's spring specific,
-// it puts null instead of empty string if in post json value is not there
-// and i can configure it if i am write
+// it puts null instead of empty string if in post json value it's not
+// and right now idk, if i can configure that
 
 @Entity
 data class Employee(
