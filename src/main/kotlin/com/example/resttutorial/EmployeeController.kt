@@ -14,8 +14,9 @@ import java.util.stream.Collectors
 @RestController
 class EmployeeController(
     private val repository: EmployeeRepository,
-    private val assembler: EmployeeModelAssembler
 ) {
+
+    private val assembler: EmployeeModelAssembler = EmployeeModelAssembler()
 
     // Aggregate root
     // tag::get-aggregate-root[]

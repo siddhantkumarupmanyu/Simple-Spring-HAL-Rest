@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest(EmployeeController::class)
-@Import(EmployeeModelAssembler::class)
 class EmployeeControllerTest {
 
     @MockBean
