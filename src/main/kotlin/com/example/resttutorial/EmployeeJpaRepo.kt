@@ -29,6 +29,7 @@ interface EmployeeRepository {
     fun updateEmployee(employee: Employee)
 }
 
+// todo: create package repositories and separate these class into different files
 // todo:
 // impl.
 // i haven't made this @Component so,
