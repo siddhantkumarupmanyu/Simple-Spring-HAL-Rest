@@ -51,6 +51,7 @@ class EmployeeControllerTest {
         val jsonString = result.response.contentAsString
 
         assertEmbeddedEmployee(jsonString, 1, "Sam Don", "Sam", "Don", "architect")
+        assertEmbeddedEmployee(jsonString, 2, "Man Nod", "Man", "Nod", "negative")
     }
 
 
