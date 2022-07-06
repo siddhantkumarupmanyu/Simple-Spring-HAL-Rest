@@ -5,10 +5,8 @@ import org.mockito.kotlin.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.context.annotation.Import
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -22,9 +20,8 @@ class EmployeeControllerTest {
     private lateinit var mockMvc: MockMvc
 
     @Test
-    fun getEmployees() {
+    fun noEmployees() {
         mockMvc.perform(get("/employees"))
-            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
             .andExpect(jsonPath("$._links.self.href").value("http://localhost/employees"))
             .andExpect(jsonPath("$._embedded").doesNotExist())
