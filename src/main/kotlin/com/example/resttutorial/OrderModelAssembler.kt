@@ -11,7 +11,6 @@ class OrderModelAssembler : RepresentationModelAssembler<Order, EntityModel<Orde
 
     override fun toModel(order: Order): EntityModel<Order> {
         // unconditional links to single-item resource and aggregate root
-
         val orderModel = EntityModel.of(
             order,
             linkTo(methodOn(OrderController::class.java).one(order.id)).withSelfRel(),

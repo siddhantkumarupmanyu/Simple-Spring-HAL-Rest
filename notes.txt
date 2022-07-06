@@ -1,0 +1,88 @@
+mvnw spring-boot:run
+
+
+MockMvc vs WebTestClient
+https://docs.spring.io/spring-framework/docs/5.3.21/reference/html/testing.html#webtestclient-tests:~:text=WebTestClient%20is%20an%20HTTP%20client%20and%20as%20such%20it%20can%20only%20verify%20what%20is%20in%20the%20client%20response%20including%20status%2C%20headers%2C%20and%20body
+
+// i understood difference b/w @Bean and @Component,
+// @Component is class level annotation and @Bean is method level
+// @Component makes that class an injectable, like registers that class in the di system
+// with Bean you have to create a @Configuration Class and under that you can annotate
+// methods @Beans for specific Types/Classes
+// like in Dagger2/hilt
+// we can define a Module, so think of @Module as @Configuration
+// and @Provides like @Bean
+// also, we can just annotate the class we want to register with di system with @Inject in its constructor
+// same with @Component
+// like a repository instead of creating a module in this case a @Configuration
+// we can just annotate the class with @Component like in there we can just @Inject
+// without going through / creating that/any module
+
+// also, there are only these two things, if i understood correctly
+// @Service/@Repository...
+// they are just @Component made to be distinguishable from other Components as in reading
+// they have no other effect...
+
+// more info
+// https://stackoverflow.com/questions/10604298/spring-component-versus-bean
+// https://stackoverflow.com/questions/39174669/what-is-the-difference-between-configuration-and-component-in-spring
+
+// https://docs.spring.io/spring-boot/docs/2.0.x/reference/html/using-boot-using-springbootapplication-annotation.html
+// @SpringBootApplication
+// is nothing more than
+// @EnableAutoConfiguration: enable Spring Boot’s auto-configuration mechanism
+// @ComponentScan: enable @Component scan on the package where the application is located (see the best practices)
+// @Configuration: allow to register extra beans in the context or import additional configuration classes
+
+
+// NOTE-FOR, @Configuration LoadDatabase
+// is configuration like module or something
+// like in hilt and dagger2 we have this concept of module
+// is this the same thing??
+// i guess so...
+// i don't need to mark my classes with @bean
+// and only classes with bean annotation can be injected.
+// this is better and much like android's hilt/dagger2 module
+// for controller's and other spring outer layer stuff that's necessary, and it makes sense
+// to annotate that class with @controller and stuff
+// but my classes, specially domain or inner classes i don't want to annotate them with framework
+// specific stuff.
+// in comparison with dagger2/hilt @bean is like @provides
+
+// my req is, i want to load mock repo and only test the Controller
+// but if i am integration testing it, i want the result to be in json
+// rather than vo.
+// if @WebMvcTest is lightweight, runs fast, and provides better isolation than @SpringBootTest @AutoConfigureMockMvc,
+// i would just use that.
+// after all tests should be FIRST...
+
+// NOTE-FOR, on @Component,
+// if i understood correctly
+// @Component gets auto-detected but not @Bean
+// from spring tutorial,
+// "And by applying Spring Framework’s @Component annotation,
+// the assembler will be automatically created when the app starts."
+
+============= test ==================
+// NOTE-FOR, EmployeeControllerTest
+// if i am just testing a controller should i just
+// use
+// https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.testing.spring-boot-applications.spring-mvc-tests
+// https://stackoverflow.com/a/44127619
+// https://stackoverflow.com/questions/59097035/springboottest-vs-webmvctest-datajpatest-service-unit-tests-what-is-the-b
+// heaviness decreases ↓
+// @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//      => starts up the whole server with everything
+//      => e2e with TestRestTemplate
+// @SpringBootTest
+// @AutoConfigureMockMvc
+//      => configures the mcv layer with Json and everything
+//      => loads the configs
+//      => test the @RestController with result returning as Json rather than value object(vo).
+// @WebMvcTest - for testing the controller layer only
+//      => no json marshaling or unmarshalling (not sure if that's how it is)(i will test it, nevertheless)
+//          - imo, it should do marshalling and unmarshalling
+//      => ut kind of test for controller, idk one of the guy said that so i just copy pasted
+// for more info visit
+// https://stackoverflow.com/questions/39865596/difference-between-using-mockmvc-with-springboottest-and-using-webmvctest
+
