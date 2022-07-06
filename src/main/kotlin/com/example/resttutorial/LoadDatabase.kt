@@ -12,12 +12,12 @@ class LoadDatabase {
     }
 
     @Bean
-    fun initDatabases(employeeRepository: EmployeeRepository, orderRepository: OrderRepository): CommandLineRunner {
+    fun initDatabases(employeeJpaRepo: EmployeeJpaRepo, orderRepository: OrderRepository): CommandLineRunner {
         return CommandLineRunner { args ->
-            employeeRepository.save(Employee("Bilbo", "Baggins", "burglar"))
-            employeeRepository.save(Employee("Frodo", "Baggins", "thief"))
+            employeeJpaRepo.save(Employee("Bilbo", "Baggins", "burglar"))
+            employeeJpaRepo.save(Employee("Frodo", "Baggins", "thief"))
 
-            employeeRepository.findAll().forEach { employee ->
+            employeeJpaRepo.findAll().forEach { employee ->
                 log.info("Preloaded $employee")
             }
 

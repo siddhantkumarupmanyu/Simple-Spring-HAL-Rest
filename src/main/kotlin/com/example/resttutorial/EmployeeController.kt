@@ -13,7 +13,7 @@ import java.util.stream.Collectors
 // If a bean has one constructor, you can omit the @Autowired, as shown in the following example:
 @RestController
 class EmployeeController(
-    private val repository: EmployeeRepository,
+    private val repository: EmployeeRepository
 ) {
 
     private val assembler: EmployeeModelAssembler = EmployeeModelAssembler()
@@ -22,7 +22,7 @@ class EmployeeController(
     // tag::get-aggregate-root[]
     @GetMapping("/employees")
     fun all(): CollectionModel<EntityModel<Employee>> {
-        val employees = repository.findAll().stream()
+        val employees = repository.allEmployees().stream()
             .map(assembler::toModel)
             .collect(Collectors.toList())
         return CollectionModel.of(
@@ -34,7 +34,7 @@ class EmployeeController(
 
     @PostMapping("/employees")
     fun newEmployee(@RequestBody newEmployee: Employee): ResponseEntity<EntityModel<Employee>> {
-        val entityModel = assembler.toModel(repository.save(newEmployee))
+        val entityModel = assembler.toModel(repository.saveEmployee(newEmployee))
         return ResponseEntity
             .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
             .body(entityModel)
@@ -44,40 +44,40 @@ class EmployeeController(
 
     @GetMapping("/employees/{id}")
     fun one(@PathVariable id: Long): EntityModel<Employee> {
-        val employee = repository.findById(id).orElseThrow {
-            EmployeeNotFoundException(id)
-        }
+        val employee = repository.findEmployeeById(id) //.orElseThrow {
+        // EmployeeNotFoundException(id)
+        // }
         return assembler.toModel(employee)
     }
 
-    @PutMapping("/employees/{id}")
-    fun replaceEmployee(
-        @RequestBody newEmployee: Employee,
-        @PathVariable id: Long
-    ): ResponseEntity<EntityModel<Employee>> {
-        val updatedEmployee = repository.findById(id)
-            .map { employee ->
-                employee.name = newEmployee.name
-                employee.role = newEmployee.role
-                repository.save(employee)
-            }.orElseGet {
-                newEmployee.id = id
-                repository.save(newEmployee)
-            }
+    // @PutMapping("/employees/{id}")
+    // fun replaceEmployee(
+    //     @RequestBody newEmployee: Employee,
+    //     @PathVariable id: Long
+    // ): ResponseEntity<EntityModel<Employee>> {
+    //     val updatedEmployee = repository.findById(id)
+    //         .map { employee ->
+    //             employee.name = newEmployee.name
+    //             employee.role = newEmployee.role
+    //             repository.save(employee)
+    //         }.orElseGet {
+    //             newEmployee.id = id
+    //             repository.save(newEmployee)
+    //         }
+    //
+    //     val entityModel = assembler.toModel(updatedEmployee)
+    //
+    //     return ResponseEntity
+    //         .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+    //         .body(entityModel)
+    // }
 
-        val entityModel = assembler.toModel(updatedEmployee)
-
-        return ResponseEntity
-            .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-            .body(entityModel)
-    }
-
-    @DeleteMapping("/employees/{id}")
-    fun deleteEmployee(@PathVariable id: Long): ResponseEntity<EntityModel<Employee>> {
-        repository.deleteById(id)
-        return ResponseEntity
-            .noContent()
-            .build()
-    }
+    // @DeleteMapping("/employees/{id}")
+    // fun deleteEmployee(@PathVariable id: Long): ResponseEntity<EntityModel<Employee>> {
+    //     repository.deleteById(id)
+    //     return ResponseEntity
+    //         .noContent()
+    //         .build()
+    // }
 
 }

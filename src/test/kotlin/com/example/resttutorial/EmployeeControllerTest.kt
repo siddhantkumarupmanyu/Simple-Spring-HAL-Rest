@@ -3,6 +3,7 @@ package com.example.resttutorial
 import com.jayway.jsonpath.JsonPath
 import net.minidev.json.JSONArray
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.verify
@@ -31,18 +32,17 @@ class EmployeeControllerTest {
             .andExpect(jsonPath("$._links.self.href").value("http://localhost/employees"))
             .andExpect(jsonPath("$._embedded").doesNotExist())
 
-        verify(repository).findAll()
+        verify(repository).allEmployees()
     }
 
     @Test
-    fun employees() {
+    fun getEmployees() {
         val sam = Employee("Sam", "Don", "architect").apply { id = 1 }
         val man = Employee("Man", "Nod", "negative").apply { id = 2 }
         val employees = listOf(sam, man)
-        `when`(repository.findAll()).thenReturn(employees)
+        `when`(repository.allEmployees()).thenReturn(employees)
 
         val result = mockMvc.perform(get("/employees"))
-            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
             .andExpect(jsonPath("$._links.self.href").value("http://localhost/employees"))
             .andExpect(jsonPath("$._embedded").exists())
@@ -54,7 +54,23 @@ class EmployeeControllerTest {
         assertEmbeddedEmployee(jsonString, 2, "Man Nod", "Man", "Nod", "negative")
     }
 
+    // Single item
+    @Test
+    @Disabled
+    fun getEmployee() {
+        val sam = Employee("Sam", "Don", "architect").apply { id = 1 }
+        val man = Employee("Man", "Nod", "negative").apply { id = 2 }
+        val employees = listOf(sam, man)
+        // `when`(repository.findById()).thenReturn(employees)
 
+        val result = mockMvc.perform(get("/employees/1"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$._links.self.href").value("http://localhost/employees/1"))
+    }
+
+
+    // todo: make it more reusable. remove the use of _embedded
     @Suppress("UNCHECKED_CAST")
     private fun assertEmbeddedEmployee(
         jsonString: String,
@@ -86,3 +102,5 @@ class EmployeeControllerTest {
 
 // for future ref...
 // https://stackoverflow.com/a/64486074
+
+// .andDo(MockMvcResultHandlers.print())
