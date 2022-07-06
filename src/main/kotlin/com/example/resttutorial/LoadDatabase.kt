@@ -23,6 +23,9 @@ class LoadDatabase {
     // to annotate that class with @controller and stuff
     // but my classes, specially domain or inner classes i don't want to annotate them with framework
     // specific stuff.
+    // in comparison with dagger2/hilt @bean is like @provides
+
+
     @Bean
     fun initDatabases(employeeRepository: EmployeeRepository, orderRepository: OrderRepository): CommandLineRunner {
         return CommandLineRunner { args ->
