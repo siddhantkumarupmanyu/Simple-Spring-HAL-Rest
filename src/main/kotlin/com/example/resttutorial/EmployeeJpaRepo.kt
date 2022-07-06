@@ -86,7 +86,7 @@ class EmployeeJpaWrapper(
 // which i actually own...
 // take very simple case of controller relying on EmployeeRepository interface
 // than the impl here the wrapper...
-// i can easy test that guy, mock the interface that i own
+// i can easily test that guy, mock the interface that i own
 // and moreover i can just, leverage the spring's di.
 // instead of going around and changing the wrapper type everywhere, which is just worst,
 // apart from time-consuming, risk of breaking everything.
