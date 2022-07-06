@@ -69,6 +69,7 @@ class EmployeeControllerTest {
             .andExpect(jsonPath("$._links.self.href").value("http://localhost/employees/1"))
     }
 
+    // todo: test 404 when repos throws employee not found
 
     // todo: make it more reusable. remove the use of _embedded
     @Suppress("UNCHECKED_CAST")

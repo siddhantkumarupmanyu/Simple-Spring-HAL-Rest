@@ -1,0 +1,9 @@
+i want to create different source sets different tests,
+    especially, integration tests and unit tests.
+    they can share a common sourceset it required like in android
+    but imo, that should be required, still ont sure, maybe for some fakes or extension functions.
+    idk... will see..
+
+
+just thinking how is kotlin coroutines integrated with spring.
+    like scopes and stuff, especially scopes, when does a thing gets in scope and when does it gets out

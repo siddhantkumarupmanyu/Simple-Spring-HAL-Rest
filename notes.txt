@@ -1,7 +1,3 @@
-just thinking how is kotlin coroutines integrated with spring.
-    like scopes and stuff, especially scopes, when does a thing gets in scope and when does it gets out
-
-
 mvnw spring-boot:run
 
 
