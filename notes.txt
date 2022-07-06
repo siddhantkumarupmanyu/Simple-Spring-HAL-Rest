@@ -4,6 +4,10 @@ mvnw spring-boot:run
 MockMvc vs WebTestClient
 https://docs.spring.io/spring-framework/docs/5.3.21/reference/html/testing.html#webtestclient-tests:~:text=WebTestClient%20is%20an%20HTTP%20client%20and%20as%20such%20it%20can%20only%20verify%20what%20is%20in%20the%20client%20response%20including%20status%2C%20headers%2C%20and%20body
 
+imo, construction injection is always better than field injection
+if you can't constructor inject, due to restrictions from the framework then only go for field injection
+in this spring is better as it allows constructor injection
+
 // i understood difference b/w @Bean and @Component,
 // @Component is class level annotation and @Bean is method level
 // @Component makes that class an injectable, like registers that class in the di system
@@ -86,3 +90,48 @@ https://docs.spring.io/spring-framework/docs/5.3.21/reference/html/testing.html#
 // for more info visit
 // https://stackoverflow.com/questions/39865596/difference-between-using-mockmvc-with-springboottest-and-using-webmvctest
 
+https://spring.io/guides/gs/testing-web/#:~:text=In%20this%20test%2C%20the%20full%20Spring%20application%20context%20is%20started%20but%20without%20the%20server.%20We%20can%20narrow%20the%20tests%20to%20only%20the%20web%20layer%20by%20using%20%40WebMvcTest
+In this test, the full Spring application context is started but without the server. We can narrow the tests to only the web layer by using @WebMvcTest
+
+from line 7, why i am testing Controller through this @WebMvcTest and not creating it in the test and then asserting
+it would save a lot of things and assertions will be much easy.
+see, i am not unit testing, i am integrating testing. i want to see things play integrate.
+like, i don't want CollectionModel from the controller rather i want the json output
+so, why are you mocking out the repository.
+see, i am not testing e2e or everything, i just want to test this controller, integration test this controller.
+i want to test it in isolation from other components...
+ok, then why are you not mocking the EmployeeModelAssembler.
+see, it's kind of implicit dependency and
+thing is we should only be mocking the interfaces and only those which we own.
+so if we are testing something.
+we need to understand what's explicit dependency and what's not...
+i think EmployeeModelAssembler is an implicit dependency, and it's fine.
+we need not make it explicit. at least not rn, when only EmployeeController is using it.
+but it's find to have in separate file, it makes it easy to test that in isolation...
+but, at the end, i think, EmployeeModelAssembler is an implicit dependency, and we need not externalize it rn...
+like in this domain it's not an implementation of some interface.
+and EmployeeController is replying on an interface.
+so, when i think i need to externalize it i will...
+see, these are not the only factors that ginger if a dependency is external or internal,
+there are multiple factors,
+if the classes are actually a collaborators, or listeners or configurators.
+you can say for EmployeeController EmployeeModelAssembler is a collaborator so why not externalize it.
+like, take it in constructor.
+and i would say, maybe i would. but for now, it just seems fine.
+and it's not making my tests harder.
+i am not making any assertions on that guy.
+rn, it would be much better to have it inside than outside...
+another case can be if a guy is a singleton and/or shared by multiple classes in some defined scope,
+then it's better to externalize it and constructor inject it...
+
+i would just say, let the system evolve, let the design evolve with you.
+you will know the system more, you get more knowledge about the domain,
+you will know the domain more and so you make better choices.
+but it more than ok, more that fine that in starting you take bad decisions,
+make bad choices. that's the way you learn about the domain more.
+without doing wrong you can't do write...
+so, don't try to just visualize, and make the final decison before hand...
+let yourself evolve overtime,
+and let the design, the things evolve with you...
+that's the beauty of se/sd. you can always revert back... :)
+good enough and one step at a time...
