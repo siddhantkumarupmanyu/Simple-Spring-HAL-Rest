@@ -18,7 +18,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 // now i need to like fake/mock everything by JpaRepository... :(
 // and another issue is i don't own that interface... :(
 
-// should be auto implemented by spring, and injected in EmployeeRepositoryWrapper
+// should be auto implemented by spring, and injected in EmployeeJpaWrapper
 interface EmployeeJpaRepo : JpaRepository<Employee, Long> {}
 
 interface EmployeeRepository {
@@ -35,7 +35,7 @@ interface EmployeeRepository {
 // i haven't made this @Component so,
 // so, it's not registered with the springs di system, rn
 // i think e2e tests should take care of this
-class EmployeeRepositoryWrapper(
+class EmployeeJpaWrapper(
     private val employeeJpaRepo: EmployeeJpaRepo
 ) : EmployeeRepository {
 
@@ -72,10 +72,10 @@ class EmployeeRepositoryWrapper(
 // this way i am trying to wrap the JpaRepository or something idk
 // tbh, room/android pattern's is much better with this one.
 // you define you own repository, here i am doing the same thing but with so much hassle
-// so EmployeeRepositoryImpl is actually kind of a wrapper
+// so EmployeeJpaWrapper is actually kind of a wrapper
 // and doing do give an opportunity to make/take repository in my domain
-// AutoImplJpaEmployeeRepo's impl should be provided by Spring.
-// and EmployeeRepositoryWrapper is a wrapper over AutoImplJpaEmployeeRepo JpaRepository
+// EmployeeJpaRepo's impl should be provided by Spring.
+// and EmployeeJpaWrapper is a wrapper over AutoImplJpaEmployeeRepo JpaRepository
 // this makes things in my domain rather than springs...
 // now i own the EmployeeRepository interface.
 // and things are just wrappers which i can integration test

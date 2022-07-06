@@ -68,6 +68,23 @@ in this spring is better as it allows constructor injection
 // the assembler will be automatically created when the app starts."
 
 ============= test ==================
+@MockBean
+bean is something i provides/registers to the spring di.
+in this case, i am providing the mock bean.
+what's so hard to understand about it.
+it's just the word "bean" is scary nothing else...
+like it's something with some great lifecycle, and we have to take care of it and yada-yada...
+but that's nothing...
+it's just something that di can inject, it's just registering with the spring di system.
+and this time instead of registering an impl we register a mock impl...
+that's all, nothing fancy, or complicated or stuff...
+like in EmployeeJpaWrapper i have to annotate it with @Component or in some @Configuration annotate
+some method with @Bean, with return type as EmployeeRepository, so spring knows how to provide
+EmployeeRepository, and provide/inject it where it's needed...
+tbh, i am liking this wrapper thingy...
+
+
+
 // NOTE-FOR, EmployeeControllerTest
 // if i am just testing a controller should i just
 // use
