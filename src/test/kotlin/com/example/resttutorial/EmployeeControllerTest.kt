@@ -48,24 +48,37 @@ class EmployeeControllerTest {
             .andExpect(jsonPath("$._embedded").exists())
             .andReturn()
 
-        val employee1 =
+        val jsonString = result.response.contentAsString
+
+        assertEmbeddedEmployee(jsonString, 1, "Sam Don", "Sam", "Don", "architect")
+    }
+
+
+    @Suppress("UNCHECKED_CAST")
+    private fun assertEmbeddedEmployee(
+        jsonString: String,
+        id: Int,
+        name: String,
+        firstName: String,
+        lastName: String,
+        role: String
+    ) {
+        val employee =
             JsonPath.read<JSONArray>(
-                result.response.contentAsString,
-                "$._embedded.employeeList[?(@.id == 1)]"
+                jsonString,
+                "$._embedded.employeeList[?(@.id == $id)]"
             )[0] as Map<Any, Any>
 
-        assertThat(employee1["id"]).isEqualTo(1)
-        assertThat(employee1["name"]).isEqualTo("Sam Don")
-        assertThat(employee1["firstName"]).isEqualTo("Sam")
-        assertThat(employee1["lastName"]).isEqualTo("Don")
-        assertThat(employee1["role"]).isEqualTo("architect")
+        assertThat(employee["id"]).isEqualTo(id)
+        assertThat(employee["name"]).isEqualTo(name)
+        assertThat(employee["firstName"]).isEqualTo(firstName)
+        assertThat(employee["lastName"]).isEqualTo(lastName)
+        assertThat(employee["role"]).isEqualTo(role)
 
-        println(employee1)
+        val selfHref = JsonPath.read<String>(employee["_links"], "$.self.href")
+        assertThat(selfHref).isEqualTo("http://localhost/employees/$id")
 
-        val selfHref = JsonPath.read<String>(employee1["_links"], "$.self.href")
-        assertThat(selfHref).isEqualTo("http://localhost/employees/1")
-
-        val employeesHref = JsonPath.read<String>(employee1["_links"], "$.employees.href")
+        val employeesHref = JsonPath.read<String>(employee["_links"], "$.employees.href")
         assertThat(employeesHref).isEqualTo("http://localhost/employees")
     }
 }
