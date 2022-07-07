@@ -69,8 +69,8 @@ class EmployeeControllerTest {
             .andExpect(jsonPath("$._links.self.href").value("http://localhost/employees/1"))
             .andReturn()
 
-        TODO()
-        // assertEmbeddedEmployee(result.response.contentAsString, 1, "Sam Don", "Sam", "Don", "architect")
+        val employeeMap = JsonPath.read<Map<Any, Any>>(result.response.contentAsString, "$")
+        assertEmployee(employeeMap, 1, "Sam Don", "Sam", "Don", "architect")
     }
 
     // todo: test 404 when repos throws employee not found
