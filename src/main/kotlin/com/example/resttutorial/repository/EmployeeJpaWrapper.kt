@@ -2,6 +2,7 @@ package com.example.resttutorial.repository
 
 import com.example.resttutorial.Employee
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 
 // todo:
 // impl.
@@ -39,4 +40,5 @@ class EmployeeJpaWrapper(
 
 }
 
+@Repository
 interface EmployeeJpaRepo : JpaRepository<Employee, Long> {}
