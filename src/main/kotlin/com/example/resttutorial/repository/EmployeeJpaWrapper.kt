@@ -37,7 +37,7 @@ class EmployeeJpaWrapper(
     }
 
     override fun deleteEmployeeById(id: Long) {
-        TODO("Not yet implemented")
+        return jpaRepo.deleteById(id)
     }
 
 }

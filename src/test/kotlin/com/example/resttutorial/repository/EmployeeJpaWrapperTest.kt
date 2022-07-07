@@ -81,4 +81,16 @@ class EmployeeJpaWrapperTest {
         assertThat(wrapper.findEmployeeById(updatedEmployee.id)).isEqualTo(Employee("Mas", "Nod", "negative"))
     }
 
+    @Test
+    fun deleteEmployeeById() {
+        val employee = Employee("Sam", "Don", "architect")
+        val savedId = wrapper.saveEmployee(employee).id
+
+        wrapper.deleteEmployeeById(savedId)
+
+        assertThrows<EmployeeNotFoundException> {
+            wrapper.findEmployeeById(savedId)
+        }
+    }
+
 }
