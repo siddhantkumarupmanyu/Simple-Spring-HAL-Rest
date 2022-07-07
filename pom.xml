@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>rest-tutorial</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>rest-tutorial-Payroll</name>
+	<name>Simple-Spring-HAL-Rest</name>
 	<description>Building REST services with Spring</description>
 	<properties>
 		<java.version>11</java.version>
