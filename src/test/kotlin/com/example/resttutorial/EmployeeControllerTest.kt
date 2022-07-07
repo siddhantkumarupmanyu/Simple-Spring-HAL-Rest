@@ -12,8 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
@@ -144,6 +143,14 @@ class EmployeeControllerTest {
 
         val employee = JsonPath.read<Map<Any, Any>>(result.response.contentAsString, "$")
         assertEmployee(employee, 1, "Sam Don", "Sam", "Don", "architect")
+    }
+
+    @Test
+    fun deleteEmployee() {
+        mockMvc.perform(delete("/employees/1"))
+            .andExpect(status().isNoContent)
+
+        verify(repository).deleteEmployeeById(1)
     }
 
     @Suppress("UNCHECKED_CAST")

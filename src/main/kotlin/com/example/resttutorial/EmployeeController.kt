@@ -70,12 +70,12 @@ class EmployeeController(
     //         .body(entityModel)
     // }
 
-    // @DeleteMapping("/employees/{id}")
-    // fun deleteEmployee(@PathVariable id: Long): ResponseEntity<EntityModel<Employee>> {
-    //     repository.deleteById(id)
-    //     return ResponseEntity
-    //         .noContent()
-    //         .build()
-    // }
+    @DeleteMapping("/employees/{id}")
+    fun deleteEmployee(@PathVariable id: Long): ResponseEntity<EntityModel<Employee>> {
+        repository.deleteEmployeeById(id)
+        return ResponseEntity
+            .noContent()
+            .build()
+    }
 
 }

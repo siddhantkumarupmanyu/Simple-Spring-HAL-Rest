@@ -25,8 +25,9 @@ interface EmployeeRepository {
     fun allEmployees(): List<Employee>
     fun findEmployeeById(id: Long): Employee
     fun saveEmployee(employee: Employee): Employee
-    fun deleteEmployee(employee: Employee)
     fun updateEmployee(employee: Employee)
+    fun deleteEmployee(employee: Employee)
+    fun deleteEmployeeById(id: Long)
 }
 
 // todo: create package repositories and separate these class into different files
@@ -52,12 +53,16 @@ class EmployeeJpaWrapper(
         TODO()
     }
 
+    override fun updateEmployee(employee: Employee) {
+        TODO()
+    }
+
     override fun deleteEmployee(employee: Employee) {
         TODO()
     }
 
-    override fun updateEmployee(employee: Employee) {
-        TODO()
+    override fun deleteEmployeeById(id: Long) {
+        TODO("Not yet implemented")
     }
 
 }
