@@ -14,8 +14,10 @@ class EmployeeJpaWrapper(
 ) : EmployeeRepository {
 
     override fun findEmployeeById(id: Long): Employee {
-        TODO()
-        // return
+        // return employeeJpaRepo.findById(id).orElseThrow {
+        //
+        // }
+        return employeeJpaRepo.findById(id).get()
     }
 
     override fun allEmployees(): List<Employee> {
@@ -23,7 +25,7 @@ class EmployeeJpaWrapper(
     }
 
     override fun saveEmployee(employee: Employee): Employee {
-        TODO()
+        return employeeJpaRepo.save(employee)
     }
 
     override fun updateEmployee(employee: Employee): Employee {
