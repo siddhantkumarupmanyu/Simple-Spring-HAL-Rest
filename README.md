@@ -1,5 +1,7 @@
 ## Simple Spring HAL Rest
 
+[![ci](https://github.com/siddhantkumarupmanyu/Simple-Spring-HAL-Rest/actions/workflows/ci.yml/badge.svg)](https://github.com/siddhantkumarupmanyu/Simple-Spring-HAL-Rest/actions/workflows/ci.yml)
+
 following 
 https://spring.io/guides/tutorials/rest/
 
