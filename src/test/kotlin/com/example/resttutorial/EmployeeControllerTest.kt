@@ -11,9 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @WebMvcTest(EmployeeController::class)
 class EmployeeControllerTest {
@@ -65,7 +63,6 @@ class EmployeeControllerTest {
         `when`(repository.findEmployeeById(2)).thenReturn(mas)
 
         var result = mockMvc.perform(get("/employees/1"))
-            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
             .andExpect(jsonPath("$._links.self.href").value("http://localhost/employees/1"))
             .andReturn()
@@ -74,7 +71,6 @@ class EmployeeControllerTest {
         assertEmployee(employeeMap, 1, "Sam Don", "Sam", "Don", "architect")
 
         result = mockMvc.perform(get("/employees/2"))
-            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
             .andExpect(jsonPath("$._links.self.href").value("http://localhost/employees/2"))
             .andReturn()
@@ -84,6 +80,22 @@ class EmployeeControllerTest {
     }
 
     // todo: test 404 when repos throws employee not found
+
+    // tbh, employee not found shouldn't be an exception.
+    // it should be following Null Object Pattern cause employee not there is imo not an exception
+    // exceptions should be exceptional
+    // but fine. it depends on domain. in this case it as simple as it gets
+    // but Null Object Pattern should be used
+    // if for domain No Employee is an actual result and not exception...
+    @Test
+    fun employeeNotFound() {
+        `when`(repository.findEmployeeById(3)).thenThrow(EmployeeNotFoundException(3))
+
+        var result = mockMvc.perform(get("/employees/3"))
+            .andExpect(status().isNotFound)
+            .andExpect(content().string("Could not find employee 3"))
+            .andReturn()
+    }
 
     // todo: make it more reusable. remove the use of _embedded
     @Suppress("UNCHECKED_CAST")
