@@ -124,7 +124,26 @@ class EmployeeControllerTest {
 
     @Test
     fun newEmployeeFromName() {
-        TODO()
+        `when`(repository.saveEmployee(any())).thenAnswer { i ->
+            val employee = i.getArgument<Employee>(0)
+            employee.id = 1
+            employee
+        }
+
+        val result = mockMvc.perform(
+            post("/employees")
+                .content("{\"name\": \"Sam Don\", \"role\": \"architect\"}")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isCreated)
+            .andExpect(header().string("Location", "http://localhost/employees/1"))
+            .andReturn()
+
+        verify(repository).saveEmployee(Employee("Sam", "Don", "architect"))
+
+        val employee = JsonPath.read<Map<Any, Any>>(result.response.contentAsString, "$")
+        assertEmployee(employee, 1, "Sam Don", "Sam", "Don", "architect")
     }
 
     @Suppress("UNCHECKED_CAST")
