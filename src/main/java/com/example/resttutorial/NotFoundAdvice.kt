@@ -1,5 +1,7 @@
 package com.example.resttutorial
 
+import com.example.resttutorial.employee.EmployeeNotFoundException
+import com.example.resttutorial.order.OrderNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler

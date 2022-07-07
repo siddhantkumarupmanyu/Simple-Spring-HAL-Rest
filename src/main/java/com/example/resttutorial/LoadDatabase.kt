@@ -1,6 +1,10 @@
 package com.example.resttutorial
 
-import com.example.resttutorial.repository.EmployeeJpaRepo
+import com.example.resttutorial.employee.Employee
+import com.example.resttutorial.employee.repository.EmployeeJpaRepo
+import com.example.resttutorial.order.Order
+import com.example.resttutorial.order.OrderRepository
+import com.example.resttutorial.order.Status
 import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean

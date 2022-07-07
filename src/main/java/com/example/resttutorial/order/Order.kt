@@ -1,4 +1,4 @@
-package com.example.resttutorial
+package com.example.resttutorial.order
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue

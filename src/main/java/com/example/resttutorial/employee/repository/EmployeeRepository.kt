@@ -1,6 +1,6 @@
-package com.example.resttutorial.repository
+package com.example.resttutorial.employee.repository
 
-import com.example.resttutorial.Employee
+import com.example.resttutorial.employee.Employee
 
 interface EmployeeRepository {
 

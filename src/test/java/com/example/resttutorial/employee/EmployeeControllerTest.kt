@@ -1,6 +1,6 @@
-package com.example.resttutorial
+package com.example.resttutorial.employee
 
-import com.example.resttutorial.repository.EmployeeRepository
+import com.example.resttutorial.employee.repository.EmployeeRepository
 import com.jayway.jsonpath.JsonPath
 import net.minidev.json.JSONArray
 import org.assertj.core.api.Assertions.assertThat

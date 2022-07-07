@@ -1,4 +1,4 @@
-package com.example.resttutorial.repository;
+package com.example.resttutorial.employee.repository;
 
 
 // NOTES

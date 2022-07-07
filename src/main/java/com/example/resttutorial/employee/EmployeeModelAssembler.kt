@@ -1,4 +1,4 @@
-package com.example.resttutorial
+package com.example.resttutorial.employee
 
 import org.springframework.hateoas.EntityModel
 import org.springframework.hateoas.server.RepresentationModelAssembler

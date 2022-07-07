@@ -1,4 +1,4 @@
-package com.example.resttutorial
+package com.example.resttutorial.order
 
 enum class Status {
     IN_PROGRESS,

@@ -1,7 +1,7 @@
-package com.example.resttutorial.repository
+package com.example.resttutorial.employee.repository
 
-import com.example.resttutorial.Employee
-import com.example.resttutorial.EmployeeNotFoundException
+import com.example.resttutorial.employee.Employee
+import com.example.resttutorial.employee.EmployeeNotFoundException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

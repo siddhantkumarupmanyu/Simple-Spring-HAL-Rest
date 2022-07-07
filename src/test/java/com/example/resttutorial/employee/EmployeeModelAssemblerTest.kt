@@ -1,4 +1,4 @@
-package com.example.resttutorial
+package com.example.resttutorial.employee
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

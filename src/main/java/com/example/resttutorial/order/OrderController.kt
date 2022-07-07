@@ -1,4 +1,4 @@
-package com.example.resttutorial
+package com.example.resttutorial.order
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.CollectionModel

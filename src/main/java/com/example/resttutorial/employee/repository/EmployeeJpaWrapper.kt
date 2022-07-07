@@ -1,7 +1,7 @@
-package com.example.resttutorial.repository
+package com.example.resttutorial.employee.repository
 
-import com.example.resttutorial.Employee
-import com.example.resttutorial.EmployeeNotFoundException
+import com.example.resttutorial.employee.Employee
+import com.example.resttutorial.employee.EmployeeNotFoundException
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
