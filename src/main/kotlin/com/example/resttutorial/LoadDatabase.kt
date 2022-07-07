@@ -1,5 +1,6 @@
 package com.example.resttutorial
 
+import com.example.resttutorial.repository.EmployeeJpaRepo
 import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean

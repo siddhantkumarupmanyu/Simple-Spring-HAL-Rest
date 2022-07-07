@@ -1,5 +1,6 @@
 package com.example.resttutorial
 
+import com.example.resttutorial.repository.EmployeeRepository
 import org.springframework.hateoas.CollectionModel
 import org.springframework.hateoas.EntityModel
 import org.springframework.hateoas.IanaLinkRelations

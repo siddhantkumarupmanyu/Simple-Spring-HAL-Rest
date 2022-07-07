@@ -1,5 +1,6 @@
 package com.example.resttutorial
 
+import com.example.resttutorial.repository.EmployeeRepository
 import com.jayway.jsonpath.JsonPath
 import net.minidev.json.JSONArray
 import org.assertj.core.api.Assertions.assertThat
