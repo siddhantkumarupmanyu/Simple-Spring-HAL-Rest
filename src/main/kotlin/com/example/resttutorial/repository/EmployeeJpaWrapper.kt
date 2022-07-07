@@ -3,13 +3,10 @@ package com.example.resttutorial.repository
 import com.example.resttutorial.Employee
 import com.example.resttutorial.EmployeeNotFoundException
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 
-// todo:
-// impl.
-// i haven't made this @Component so,
-// so, it's not registered with the springs di system, rn
-// i think e2e tests should take care of this
+@Component
 class EmployeeJpaWrapper(
     private val jpaRepo: EmployeeJpaRepo
 ) : EmployeeRepository {
