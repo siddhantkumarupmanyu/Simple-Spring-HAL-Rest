@@ -1,6 +1,7 @@
 package com.example.resttutorial.repository
 
 import com.example.resttutorial.Employee
+import com.example.resttutorial.EmployeeNotFoundException
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
@@ -14,10 +15,9 @@ class EmployeeJpaWrapper(
 ) : EmployeeRepository {
 
     override fun findEmployeeById(id: Long): Employee {
-        // return employeeJpaRepo.findById(id).orElseThrow {
-        //
-        // }
-        return employeeJpaRepo.findById(id).get()
+        return employeeJpaRepo.findById(id).orElseThrow {
+            EmployeeNotFoundException(id)
+        }
     }
 
     override fun allEmployees(): List<Employee> {
