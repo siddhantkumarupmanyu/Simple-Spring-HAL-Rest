@@ -29,7 +29,7 @@ class EmployeeJpaWrapper(
     }
 
     override fun updateEmployee(employee: Employee): Employee {
-        TODO()
+        return jpaRepo.save(employee)
     }
 
     override fun deleteEmployee(employee: Employee) {

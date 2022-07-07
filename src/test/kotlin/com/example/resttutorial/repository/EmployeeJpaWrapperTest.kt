@@ -13,6 +13,10 @@ import org.springframework.context.annotation.Import
 @Import(EmployeeJpaWrapper::class)
 class EmployeeJpaWrapperTest {
 
+    // same in memory database is shared across all the tests.
+    // so, id given when save in each test depends on the execution order of the test
+    // which i don't control and can change in each invocation
+
     @Autowired
     private lateinit var wrapper: EmployeeJpaWrapper
 
@@ -48,6 +52,33 @@ class EmployeeJpaWrapperTest {
         assertThat(allEmployees).hasSize(2)
 
         assertThat(allEmployees).containsExactly(employee1, employee2)
+    }
+
+    @Test
+    fun updateEmployee() {
+        val employee = Employee("Sam", "Don", "architect")
+        val savedEmployee = wrapper.saveEmployee(employee)
+
+        val update = savedEmployee.copy("Mas", "Nod", "negative")
+        update.id = savedEmployee.id
+        val updatedEmployee = wrapper.updateEmployee(update)
+
+        assertThat(wrapper.allEmployees()).hasSize(1)
+        assertThat(savedEmployee.id).isEqualTo(updatedEmployee.id)
+        assertThat(wrapper.findEmployeeById(savedEmployee.id)).isEqualTo(Employee("Mas", "Nod", "negative"))
+    }
+
+    @Test
+    fun updateCreatesEmployeeIfItDoesNotExit() {
+        val update = Employee("Mas", "Nod", "negative").apply {
+            id = 100
+        }
+        val updatedEmployee = wrapper.updateEmployee(update)
+
+        assertThat(wrapper.allEmployees()).hasSize(1)
+        // Jpa creates a new employee but next consecutive id is taken into account rather than the provided id
+        assertThat(updatedEmployee.id).isNotEqualTo(100)
+        assertThat(wrapper.findEmployeeById(updatedEmployee.id)).isEqualTo(Employee("Mas", "Nod", "negative"))
     }
 
 }
