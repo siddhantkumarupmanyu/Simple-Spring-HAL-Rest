@@ -163,7 +163,7 @@ class EmployeeControllerTest {
 
         val result = mockMvc.perform(
             put("/employees/1")
-                .content("{\"firstName\": \"Mas\", \"lastName\": \"Nod\", \"role\": \"negative\"}")
+                .content("{\"name\": \"Mas Nod\", \"role\": \"negative\"}")
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andExpect(status().isCreated)
@@ -178,7 +178,25 @@ class EmployeeControllerTest {
 
     @Test
     fun updateEmployeeByName() {
-        TODO()
+        val updatedEmployee = Employee("Mas", "Nod", "negative").apply {
+            id = 1
+        }
+
+        `when`(repository.updateEmployee(updatedEmployee)).thenReturn(updatedEmployee)
+
+        val result = mockMvc.perform(
+            put("/employees/1")
+                .content("{\"firstName\": \"Mas\", \"lastName\": \"Nod\", \"role\": \"negative\"}")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isCreated)
+            .andExpect(header().string("Location", "http://localhost/employees/1"))
+            .andReturn()
+
+        verify(repository).updateEmployee(updatedEmployee)
+
+        val employee = JsonPath.read<Map<Any, Any>>(result.response.contentAsString, "$")
+        assertEmployee(employee, 1, "Mas Nod", "Mas", "Nod", "negative")
     }
 
     @Suppress("UNCHECKED_CAST")
