@@ -153,6 +153,34 @@ class EmployeeControllerTest {
         verify(repository).deleteEmployeeById(1)
     }
 
+    @Test
+    fun updateEmployee() {
+        val updatedEmployee = Employee("Mas", "Nod", "negative").apply {
+            id = 1
+        }
+
+        `when`(repository.updateEmployee(updatedEmployee)).thenReturn(updatedEmployee)
+
+        val result = mockMvc.perform(
+            put("/employees/1")
+                .content("{\"firstName\": \"Mas\", \"lastName\": \"Nod\", \"role\": \"negative\"}")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isCreated)
+            .andExpect(header().string("Location", "http://localhost/employees/1"))
+            .andReturn()
+
+        verify(repository).updateEmployee(updatedEmployee)
+
+        val employee = JsonPath.read<Map<Any, Any>>(result.response.contentAsString, "$")
+        assertEmployee(employee, 1, "Mas Nod", "Mas", "Nod", "negative")
+    }
+
+    @Test
+    fun updateEmployeeByName() {
+        TODO()
+    }
+
     @Suppress("UNCHECKED_CAST")
     private fun assertEmployee(
         employeeMap: Map<Any, Any>,
