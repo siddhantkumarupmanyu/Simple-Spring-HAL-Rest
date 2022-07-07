@@ -8,18 +8,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.context.annotation.Import
 
 @DataJpaTest
-// @Import(EmployeeJpaWrapper::class)
+@Import(EmployeeJpaWrapper::class)
 class EmployeeJpaWrapperTest {
-
+    
     @Autowired
-    private lateinit var employeeJpaRepo: EmployeeJpaRepo
-
-    // this is not working cause employeeJpaRepo is not injected yet.
-    // let me just use the import one with auto wiring the wrapper itself
-    private val wrapper = EmployeeJpaWrapper(employeeJpaRepo)
-
-    // @Autowired
-    // private lateinit var wrapper: EmployeeJpaWrapper
+    private lateinit var wrapper: EmployeeJpaWrapper
 
     @Test
     fun saveEmployee() {
