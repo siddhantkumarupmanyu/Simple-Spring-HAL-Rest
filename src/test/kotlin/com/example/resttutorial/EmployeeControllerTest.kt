@@ -18,8 +18,6 @@ class EmployeeControllerTest {
 
     @MockBean
     private lateinit var repository: EmployeeRepository
-    // todo: fake would be much better right. it's mocking too much,
-    // like i need to even find employee by id and stuff
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -79,8 +77,6 @@ class EmployeeControllerTest {
         assertEmployee(employeeMap, 2, "Mas Nod", "Mas", "Nod", "negative")
     }
 
-    // todo: test 404 when repos throws employee not found
-
     // tbh, employee not found shouldn't be an exception.
     // it should be following Null Object Pattern cause employee not there is imo not an exception
     // exceptions should be exceptional
@@ -97,7 +93,6 @@ class EmployeeControllerTest {
             .andReturn()
     }
 
-    // todo: make it more reusable. remove the use of _embedded
     @Suppress("UNCHECKED_CAST")
     private fun assertEmployee(
         employeeMap: Map<Any, Any>,
