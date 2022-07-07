@@ -5,12 +5,16 @@ import net.minidev.json.JSONArray
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @WebMvcTest(EmployeeController::class)
@@ -52,6 +56,7 @@ class EmployeeControllerTest {
     }
 
     // Single item
+
     @Test
     fun getEmployee() {
         val sam = Employee("Sam", "Don", "architect").apply { id = 1 }
@@ -91,6 +96,35 @@ class EmployeeControllerTest {
             .andExpect(status().isNotFound)
             .andExpect(content().string("Could not find employee 3"))
             .andReturn()
+    }
+
+    @Test
+    fun newEmployee() {
+        `when`(repository.saveEmployee(any())).thenAnswer { i ->
+            val employee = i.getArgument<Employee>(0)
+            employee.id = 1
+            employee
+        }
+
+        val result = mockMvc.perform(
+            post("/employees")
+                .content("{\"firstName\": \"Sam\", \"lastName\": \"Don\", \"role\": \"architect\"}")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isCreated)
+            .andExpect(header().string("Location", "http://localhost/employees/1"))
+            .andReturn()
+
+        verify(repository).saveEmployee(Employee("Sam", "Don", "architect"))
+
+        val employee = JsonPath.read<Map<Any, Any>>(result.response.contentAsString, "$")
+        assertEmployee(employee, 1, "Sam Don", "Sam", "Don", "architect")
+    }
+
+    @Test
+    fun newEmployeeFromName() {
+        TODO()
     }
 
     @Suppress("UNCHECKED_CAST")

@@ -44,9 +44,7 @@ class EmployeeController(
 
     @GetMapping("/employees/{id}")
     fun one(@PathVariable id: Long): EntityModel<Employee> {
-        val employee = repository.findEmployeeById(id) //.orElseThrow {
-        // EmployeeNotFoundException(id)
-        // }
+        val employee = repository.findEmployeeById(id)
         return assembler.toModel(employee)
     }
 
