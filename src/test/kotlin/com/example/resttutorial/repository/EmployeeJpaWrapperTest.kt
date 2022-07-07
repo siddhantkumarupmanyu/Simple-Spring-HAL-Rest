@@ -21,8 +21,7 @@ class EmployeeJpaWrapperTest {
         var employee = Employee("Sam", "Don", "architect")
         employee = wrapper.saveEmployee(employee)
 
-        assertThat(employee.id).isEqualTo(1)
-        assertThat(wrapper.findEmployeeById(1)).isEqualTo(employee)
+        assertThat(wrapper.findEmployeeById(employee.id)).isEqualTo(employee)
     }
 
     @Test
@@ -34,6 +33,21 @@ class EmployeeJpaWrapperTest {
         assertThat(exception.message).isEqualTo("Could not find employee 1")
     }
 
+    @Test
+    fun allEmployees() {
+        val employee1 = Employee("Sam", "Don", "architect")
+        wrapper.saveEmployee(employee1)
 
+        val employee2 = employee1.copy().apply {
+            name = "Mas Nod"
+            role = "negative"
+        }
+        wrapper.saveEmployee(employee2)
+
+        val allEmployees = wrapper.allEmployees()
+        assertThat(allEmployees).hasSize(2)
+
+        assertThat(allEmployees).containsExactly(employee1, employee2)
+    }
 
 }
