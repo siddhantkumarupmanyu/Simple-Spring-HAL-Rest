@@ -3,7 +3,6 @@ package com.example.resttutorial
 import com.jayway.jsonpath.JsonPath
 import net.minidev.json.JSONArray
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.verify
@@ -21,6 +20,8 @@ class EmployeeControllerTest {
 
     @MockBean
     private lateinit var repository: EmployeeRepository
+    // todo: fake would be much better right. it's mocking too much,
+    // like i need to even find employee by id and stuff
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -50,55 +51,61 @@ class EmployeeControllerTest {
 
         val jsonString = result.response.contentAsString
 
-        assertEmbeddedEmployee(jsonString, 1, "Sam Don", "Sam", "Don", "architect")
-        assertEmbeddedEmployee(jsonString, 2, "Man Nod", "Man", "Nod", "negative")
+        assertEmployee(getEmbeddedEmployeeMap(jsonString, 1), 1, "Sam Don", "Sam", "Don", "architect")
+        assertEmployee(getEmbeddedEmployeeMap(jsonString, 2), 2, "Man Nod", "Man", "Nod", "negative")
     }
 
     // Single item
     @Test
-    @Disabled
     fun getEmployee() {
         val sam = Employee("Sam", "Don", "architect").apply { id = 1 }
         val man = Employee("Man", "Nod", "negative").apply { id = 2 }
         val employees = listOf(sam, man)
-        // `when`(repository.findById()).thenReturn(employees)
+        `when`(repository.findEmployeeById(1)).thenReturn(sam)
 
         val result = mockMvc.perform(get("/employees/1"))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
             .andExpect(jsonPath("$._links.self.href").value("http://localhost/employees/1"))
+            .andReturn()
+
+        TODO()
+        // assertEmbeddedEmployee(result.response.contentAsString, 1, "Sam Don", "Sam", "Don", "architect")
     }
 
     // todo: test 404 when repos throws employee not found
 
     // todo: make it more reusable. remove the use of _embedded
     @Suppress("UNCHECKED_CAST")
-    private fun assertEmbeddedEmployee(
-        jsonString: String,
+    private fun assertEmployee(
+        employeeMap: Map<Any, Any>,
         id: Int,
         name: String,
         firstName: String,
         lastName: String,
         role: String
     ) {
-        val employee =
-            JsonPath.read<JSONArray>(
-                jsonString,
-                "$._embedded.employeeList[?(@.id == $id)]"
-            )[0] as Map<Any, Any>
+        assertThat(employeeMap["id"]).isEqualTo(id)
+        assertThat(employeeMap["name"]).isEqualTo(name)
+        assertThat(employeeMap["firstName"]).isEqualTo(firstName)
+        assertThat(employeeMap["lastName"]).isEqualTo(lastName)
+        assertThat(employeeMap["role"]).isEqualTo(role)
 
-        assertThat(employee["id"]).isEqualTo(id)
-        assertThat(employee["name"]).isEqualTo(name)
-        assertThat(employee["firstName"]).isEqualTo(firstName)
-        assertThat(employee["lastName"]).isEqualTo(lastName)
-        assertThat(employee["role"]).isEqualTo(role)
-
-        val selfHref = JsonPath.read<String>(employee["_links"], "$.self.href")
+        val selfHref = JsonPath.read<String>(employeeMap["_links"], "$.self.href")
         assertThat(selfHref).isEqualTo("http://localhost/employees/$id")
 
-        val employeesHref = JsonPath.read<String>(employee["_links"], "$.employees.href")
+        val employeesHref = JsonPath.read<String>(employeeMap["_links"], "$.employees.href")
         assertThat(employeesHref).isEqualTo("http://localhost/employees")
     }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun getEmbeddedEmployeeMap(
+        jsonString: String,
+        id: Int
+    ) = JsonPath.read<JSONArray>(
+        jsonString,
+        "$._embedded.employeeList[?(@.id == $id)]"
+    )[0] as Map<Any, Any>
 }
 
 // for future ref...
