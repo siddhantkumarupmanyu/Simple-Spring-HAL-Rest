@@ -39,7 +39,7 @@ class EmployeeControllerTest {
     @Test
     fun getEmployees() {
         val sam = Employee("Sam", "Don", "architect").apply { id = 1 }
-        val man = Employee("Man", "Nod", "negative").apply { id = 2 }
+        val man = Employee("Mas", "Nod", "negative").apply { id = 2 }
         val employees = listOf(sam, man)
         `when`(repository.allEmployees()).thenReturn(employees)
 
@@ -52,25 +52,35 @@ class EmployeeControllerTest {
         val jsonString = result.response.contentAsString
 
         assertEmployee(getEmbeddedEmployeeMap(jsonString, 1), 1, "Sam Don", "Sam", "Don", "architect")
-        assertEmployee(getEmbeddedEmployeeMap(jsonString, 2), 2, "Man Nod", "Man", "Nod", "negative")
+        assertEmployee(getEmbeddedEmployeeMap(jsonString, 2), 2, "Mas Nod", "Mas", "Nod", "negative")
     }
 
     // Single item
     @Test
     fun getEmployee() {
         val sam = Employee("Sam", "Don", "architect").apply { id = 1 }
-        val man = Employee("Man", "Nod", "negative").apply { id = 2 }
-        val employees = listOf(sam, man)
+        val mas = Employee("Mas", "Nod", "negative").apply { id = 2 }
+        val employees = listOf(sam, mas)
         `when`(repository.findEmployeeById(1)).thenReturn(sam)
+        `when`(repository.findEmployeeById(2)).thenReturn(mas)
 
-        val result = mockMvc.perform(get("/employees/1"))
+        var result = mockMvc.perform(get("/employees/1"))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
             .andExpect(jsonPath("$._links.self.href").value("http://localhost/employees/1"))
             .andReturn()
 
-        val employeeMap = JsonPath.read<Map<Any, Any>>(result.response.contentAsString, "$")
+        var employeeMap = JsonPath.read<Map<Any, Any>>(result.response.contentAsString, "$")
         assertEmployee(employeeMap, 1, "Sam Don", "Sam", "Don", "architect")
+
+        result = mockMvc.perform(get("/employees/2"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$._links.self.href").value("http://localhost/employees/2"))
+            .andReturn()
+
+        employeeMap = JsonPath.read(result.response.contentAsString, "$")
+        assertEmployee(employeeMap, 2, "Mas Nod", "Mas", "Nod", "negative")
     }
 
     // todo: test 404 when repos throws employee not found
