@@ -93,4 +93,16 @@ class EmployeeJpaWrapperTest {
         }
     }
 
+    @Test
+    fun deleteEmployee() {
+        val employee = Employee("Sam", "Don", "architect")
+        val savedEmployee = wrapper.saveEmployee(employee)
+
+        wrapper.deleteEmployee(savedEmployee)
+
+        assertThrows<EmployeeNotFoundException> {
+            wrapper.findEmployeeById(savedEmployee.id)
+        }
+    }
+
 }

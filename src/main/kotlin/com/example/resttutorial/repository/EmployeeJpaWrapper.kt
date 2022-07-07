@@ -33,7 +33,7 @@ class EmployeeJpaWrapper(
     }
 
     override fun deleteEmployee(employee: Employee) {
-        TODO()
+        return jpaRepo.delete(employee)
     }
 
     override fun deleteEmployeeById(id: Long) {
